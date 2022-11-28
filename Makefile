@@ -4,7 +4,7 @@ export
 .PHONY: mongodb
 ## start MongoDB
 mongodb: down
-	@docker compose up -d finder-mongodb finder-mongoadmin
+	@docker compose up -d finder-mongodb finder-mongoadmin finder-redis
 
 .PHONY: all
 all: mongodb
