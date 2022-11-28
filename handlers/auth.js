@@ -1,4 +1,6 @@
-const {createToken} = require("../utils/jwt")
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
+const { createToken } = require("../utils/jwt");
 
 const login = (req, res) => {
   // récupérer l'utilisateur dans la bdd via son email
@@ -9,7 +11,7 @@ const login = (req, res) => {
     req.body.mdp !== "Azerty.51@"
   ) {
     return res.status(401).send({
-        message: "invalid credentials"
+      message: "invalid credentials",
     });
   }
 
@@ -20,13 +22,32 @@ const login = (req, res) => {
     role: "admin",
   };
 
-  const token = createToken(payload, 60 * 60)
-  
+  const token = createToken(payload, 60 * 60);
+
   res.send({
     token: token,
   });
 };
 
+const activeAccount = async (req, res) => {
+  try {
+    const token = req.query.token;
+    if (!token) {
+      throw new Error("no token");
+    }
+
+    const {email} = jwt.verify(token, process.env.JWT_SECRET_ACTIVE);
+    await User.findOneAndUpdate({ email: email }, { is_confirmed : true});
+
+    res.status(301).redirect(`${process.env.BASE_URL}`)
+  } catch (error) {
+    res.status(401).send({
+      message: "invalid token to active account",
+    });
+  }
+};
+
 module.exports = {
   login,
+  activeAccount,
 };

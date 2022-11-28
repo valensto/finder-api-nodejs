@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const sendValidationEmail = async (emailDestination, link) => {
+const sendValidationEmail = async (emailDestination, token) => {
   try {
     const config = {
       host: process.env.MAILER_HOST,
@@ -17,7 +17,7 @@ const sendValidationEmail = async (emailDestination, link) => {
       to: emailDestination,
       subject: "Activation de votre compte ✔",
       html: `
-<a href="${link}">
+<a href="${process.env.BASE_URL}/api/auth/active-account?token=${token}">
     activez votre compte
 </a>      
 `,

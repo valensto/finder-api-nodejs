@@ -3,7 +3,7 @@ const viewHome = function (req, res) {
 };
 
 const viewContact = function (req, res) {
-  res.send("welcome to the contact page");
+  res.send("welcome to the home page");
 };
 
 module.exports = {

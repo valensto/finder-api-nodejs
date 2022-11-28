@@ -5,7 +5,7 @@ const {sendValidationEmail} = require("../utils/mailer")
 const createUser = async (req, res) => {
   try {
     const user = await new User(req.body);
-    // await user.save();
+    await user.save();
 
     const token = createToken(
       { email: user.email },
@@ -13,7 +13,7 @@ const createUser = async (req, res) => {
       process.env.JWT_SECRET_ACTIVE
     );
 
-    sendValidationEmail(user.email, "https://google.com")
+    sendValidationEmail(user.email, token)
 
     res.status(201).send(user);
   } catch (error) {
