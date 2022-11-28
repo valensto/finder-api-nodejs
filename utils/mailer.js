@@ -1,11 +1,11 @@
 const nodemailer = require("nodemailer");
 
-const sendValidationEmail = async (emailDestination) => {
+const sendValidationEmail = async (emailDestination, link) => {
   try {
     const config = {
       host: process.env.MAILER_HOST,
       port: process.env.MAILER_PORT,
-      secure: false,
+      secure: process.env.MAILER_SSL === "true",
       auth: {
         user: process.env.MAILER_USER,
         pass: process.env.MAILER_PWD,
@@ -13,11 +13,14 @@ const sendValidationEmail = async (emailDestination) => {
     };
     const transporter = nodemailer.createTransport(config);
     let info = await transporter.sendMail({
-      from: '"Finder 👻" <v.e.brochard@gmail.com>',
+      from: '"Finder Activation 👻" <v.e.brochard@gmail.com>',
       to: emailDestination,
-      subject: "Hello ✔",
-      text: "Hello world?",
-      html: "<b>Hello world?</b>",
+      subject: "Activation de votre compte ✔",
+      html: `
+<a href="${link}">
+    activez votre compte
+</a>      
+`,
     });
 
     console.log("Message sent: %s", info.messageId);
