@@ -5,7 +5,7 @@ const sendValidationEmail = async (emailDestination) => {
     const transporter = nodemailer.createTransport({
       host: process.env.MAILER_HOST,
       port: process.env.MAILER_PORT,
-      secure: process.env.MAILER_SSL, // true for 465, false for other ports
+      secure: false, // true for 465, false for other ports
       auth: {
         user: process.env.MAILER_USER,
         pass: process.env.MAILER_PWD,
