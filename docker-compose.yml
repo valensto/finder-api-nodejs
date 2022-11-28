@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+
+  finder-mongodb:
+    image: mongo:${MONGODB_VERSION}
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PWD}
+      MONGO_INITDB_DATABASE: ${MONGODB_DATABASE}
+    ports:
+      - 27017:27017
+    volumes:
+      - finder-data:/data/db
+    hostname: finder-mongodb
+
+  finder-mongoadmin:
+    image: mongo-express:latest
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=finder-mongodb
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGODB_USER}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGODB_PWD}
+    ports:
+      - "8082:8081"
+    restart: unless-stopped
+
+volumes:
+  finder-data:
