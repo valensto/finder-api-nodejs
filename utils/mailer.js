@@ -2,15 +2,16 @@ const nodemailer = require("nodemailer");
 
 const sendValidationEmail = async (emailDestination) => {
   try {
-    const transporter = nodemailer.createTransport({
+    const config = {
       host: process.env.MAILER_HOST,
       port: process.env.MAILER_PORT,
-      secure: false, // true for 465, false for other ports
+      secure: false,
       auth: {
         user: process.env.MAILER_USER,
         pass: process.env.MAILER_PWD,
       },
-    });
+    };
+    const transporter = nodemailer.createTransport(config);
     let info = await transporter.sendMail({
       from: '"Finder 👻" <v.e.brochard@gmail.com>',
       to: emailDestination,
