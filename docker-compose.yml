@@ -11,7 +11,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - finder-data:/data/db
+      - mongo-finder-volume:/data/db
     hostname: finder-mongodb
 
   finder-mongoadmin:
@@ -32,9 +32,11 @@ services:
     ports:
       - '${REDIS_PORT}:6379'
     volumes:
-      - redis-data:/data
+      - redis-finder-volume:/data
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
 
 volumes:
-  finder-data:
-  redis-data:
+  mongo-finder-volume:
+    external: true
+  redis-finder-volume:
+    external: true
