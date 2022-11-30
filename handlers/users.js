@@ -1,19 +1,11 @@
 const User = require("../models/user");
-const { createToken } = require("../utils/jwt");
-const {sendValidationEmail} = require("../utils/mailer")
 
 const createUser = async (req, res) => {
   try {
     const user = await new User(req.body);
     await user.save();
 
-    const token = createToken(
-      { email: user.email },
-      60 * 30,
-      process.env.JWT_SECRET_ACTIVE
-    );
-
-    sendValidationEmail(user.email, token)
+    user.sendValidationEmail();
 
     res.status(201).send(user);
   } catch (error) {
